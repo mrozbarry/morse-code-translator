@@ -7,13 +7,15 @@ export default class App extends Component {
     super(props)
 
     const separators = {
-      word: " ",
+      word: ";",
       letter: "/"
     }
 
+    const sentence = "...././.-../.-../---/--..--;.--/---/.-./.-../-.."
+
     this.state = {
-      translation: this.translate("hello, world", separators, false),
-      sentence: "",
+      translation: this.translate(sentence, separators, true),
+      sentence,
       wordSeparator: separators.word,
       letterSeparator: separators.letter,
       output: "",
@@ -23,13 +25,18 @@ export default class App extends Component {
 
   onSentenceChanged (e) {
     const { wordSeparator, letterSeparator } = this.state
+    const separators = {
+      word: wordSeparator,
+      letter: letterSeparator
+    }
+
+    const _isMorseCode = isMorseCode(e.target.value, separators)
+    const sentence = e.target.value
 
     this.setState({
-      sentence: e.target.value,
-      isMorseCode: isMorseCode(e.target.value, {
-        word: wordSeparator,
-        letter: letterSeparator
-      })
+      sentence,
+      isMorseCode: _isMorseCode,
+      translation: this.translate(sentence, separators, _isMorseCode)
     })
   }
 
@@ -49,7 +56,7 @@ export default class App extends Component {
     const { sentence, wordSeparator } = this.state
 
     this.setState({
-      letterSeparator: sentence,
+      letterSeparator: e.target.value,
       isMorseCode: isMorseCode(sentence, {
         word: wordSeparator,
         letter: e.target.value
@@ -71,6 +78,8 @@ export default class App extends Component {
   }
 
   translate (text, separators, morseCode) {
+    if (!separators.word || !separators.letter) return this.state.translation
+
     return [
       text,
       morseCode
@@ -88,6 +97,7 @@ export default class App extends Component {
         </div>
         <form className="layout__input" onSubmit={this.onFormSubmit.bind(this)}>
           <Field
+            style={{ flexGrow: 1 }}
             inputProps={{
               type: "text",
               id: "sentence",
@@ -98,13 +108,12 @@ export default class App extends Component {
           >Sentence (Either morse code or regular text)</Field>
 
           <Field
-            width="120px"
+            style={{ width: "120px" }}
             inputProps={{
               type: "text",
               id: "word-separator",
               value: this.state.wordSeparator,
               onChange: this.onWordSeparatorChanged.bind(this),
-              minLength: 1,
               maxLength: 1,
               pattern: "[^\\.\\-]",
               required: true,
@@ -116,13 +125,13 @@ export default class App extends Component {
           >Word Separator</Field>
 
           <Field
-            width="120px"
+            style={{ width: "120px" }}
             inputProps={{
               type: "text",
               id: "letter-separator",
               value: this.state.letterSeparator,
               onChange: this.onLetterSeparatorChanged.bind(this),
-              minLength: 1,
+              onBlur: ((e) => e.target.form.checkValidity()),
               maxLength: 1,
               pattern: "[^\\.\\-]",
               required: true,
@@ -132,8 +141,6 @@ export default class App extends Component {
               }
             }}
           >Letter Separator</Field>
-
-          <button className="layout__input-translate">{this.buttonText()}</button>
         </form>
       </div>
     )
