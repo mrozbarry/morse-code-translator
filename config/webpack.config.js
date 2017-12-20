@@ -6,12 +6,12 @@ module.exports = {
   devtool: "inline-cheap-module-source-map",
 
   entry: {
-    "index": path.resolve(ROOT, "src", "index.js"),
+    "index": path.resolve(ROOT, "src", "index.js")
   },
 
   output: {
     filename: "[name].js",
-    publicPath: "/",
+    publicPath: "/"
   },
 
   module: {
@@ -20,9 +20,9 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         include: /src/,
-        loader: "babel-loader",
-      },
-    ],
+        loader: "babel-loader"
+      }
+    ]
   },
 
   target: "web",
@@ -31,6 +31,6 @@ module.exports = {
     port: 8080,
     host: "0.0.0.0",
     contentBase: path.resolve(ROOT, "public"),
-    stats: true,
-  },
+    stats: true
+  }
 }
