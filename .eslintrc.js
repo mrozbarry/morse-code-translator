@@ -7,6 +7,7 @@ module.exports = {
   "extends": ["eslint:recommended", "standard", "plugin:react/recommended"],
   "plugins": ["react"],
   "rules": {
-    "quotes": ["error", "double"]
+    "quotes": ["error", "double"],
+    "react/prop-types": ["off"]
   }
 }
