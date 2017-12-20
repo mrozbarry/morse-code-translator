@@ -1,8 +1,9 @@
 import React from "react"
 
-export default function Field ({ width, inputProps, children }) {
+export default function Field ({ style, inputProps, children }) {
+  const wrapperStyle = style || {}
   return (
-    <div style={{ width: width || "auto" }} className="field">
+    <div style={wrapperStyle} className="field">
       <input {...inputProps} className="field__input" />
       <label htmlFor={inputProps.id} className="field__label">{children}</label>
     </div>
