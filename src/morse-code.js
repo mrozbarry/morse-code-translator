@@ -1,8 +1,3 @@
-/*
- *
- *
- */
-
 export const charToMorse = {
   "0": "-----",
   "1": ".----",
@@ -65,17 +60,18 @@ export const invertObject = (object) => {
 export const morseToChar = invertObject(charToMorse)
 
 export const encode = (sentence, separators) => {
-  const { letter, word } = separators
-
   return sentence
     .toLowerCase()
+    .split(" ")
+    .map((sentenceWord) => encodeWord(sentenceWord, separators))
+    .join(separators.word)
+}
+
+export const encodeWord = (sentenceWord, separators) => {
+  return sentenceWord
     .split("")
-    .map(c => {
-      if (c === " ") return word
-      if (!charToMorse[c]) return ""
-      return `${charToMorse[c]}${letter}`
-    })
-    .join("")
+    .map((char) => charToMorse[char] || "")
+    .join(separators.letter)
 }
 
 export const decode = (sentence, separators) => {

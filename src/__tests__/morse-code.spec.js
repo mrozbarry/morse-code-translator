@@ -1,4 +1,4 @@
-import { encode, isMorseCode } from "../morse-code"
+import { encode, decode, isMorseCode } from "../morse-code"
 import { expect } from "chai"
 
 const separators = { letter: "/", word: " " }
@@ -6,7 +6,7 @@ const separators = { letter: "/", word: " " }
 describe("encode", () => {
   it("translates 'a' to '.-'", () => {
     expect(encode("a", separators))
-      .to.equal(".-/")
+      .to.equal(".-")
   })
 
   it("translate an invalid character to an empty string", () => {
@@ -16,7 +16,14 @@ describe("encode", () => {
 
   it("translates an entire sentence", () => {
     expect(encode("hello you", separators))
-      .to.equal("...././.-../.-../---/ -.--/---/..-/")
+      .to.equal("...././.-../.-../--- -.--/---/..-")
+  })
+})
+
+describe("decode", () => {
+  it("decodes '.-' to 'a'", () => {
+    expect(decode(".-", separators))
+      .to.equal("a")
   })
 })
 
