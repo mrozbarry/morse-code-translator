@@ -131,7 +131,7 @@ export default class App extends Component {
               id: "letter-separator",
               value: this.state.letterSeparator,
               onChange: this.onLetterSeparatorChanged.bind(this),
-              onBlur: ((e) => e.target.form.checkValidity()),
+              onBlur: (e) => e.target.form.checkValidity(),
               maxLength: 1,
               pattern: "[^\\.\\-]",
               required: true,
